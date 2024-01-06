@@ -32,6 +32,9 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     //[SerializeField] private int jumpCount = 1;
 
+    [Header("粒子")]
+    [SerializeField] private ParticleSystem tossParticle;
+
     private bool canJump;
     private bool isJumping;
     private bool isSmashing;
@@ -62,7 +65,7 @@ public class PlayerMove : MonoBehaviour
             
         if (Input.GetButtonDown(smashInputString) && CanSmash())
         {
-            StartCoroutine(Smash());
+            Smash();
         }
 
         if (Input.GetButtonDown(blockInputString))
@@ -73,6 +76,7 @@ public class PlayerMove : MonoBehaviour
         BetterJump();
         Move();
 
+        animator.SetFloat("velecityY", rb.velocity.y);
         lastGrounded = isGrounded;
     }
 
@@ -106,6 +110,8 @@ public class PlayerMove : MonoBehaviour
     {
         smashCount = 1;
         isJumping = false;
+        isSmashing = false;
+        animator.SetBool("Jump", false);
     }
 
     private void Jump()
@@ -113,6 +119,7 @@ public class PlayerMove : MonoBehaviour
         isJumping = true;
         rb.AddForce(new Vector3(0, jumpSpeed, 0), ForceMode.Impulse);
         SoundManager.Instance.PlaySound("toss");
+        animator.SetBool("Jump", true);
     }
 
     public bool CanSmash()
@@ -120,11 +127,17 @@ public class PlayerMove : MonoBehaviour
         return !isSmashing && !isBlocking && !isGrounded && isJumping && smashCount > 0;
     }
 
-    private IEnumerator Smash()
+    private void Smash()
     {
         isSmashing = true;
-        yield return new WaitForSeconds(1);
+        animator.SetBool("Smash", true);
+        smashCount --;
+    }
+
+    public void OnSmashAnimationEnd()
+    {
         isSmashing = false;
+        animator.SetBool("Smash", false);
     }
 
     private bool CanBlock()
@@ -140,7 +153,8 @@ public class PlayerMove : MonoBehaviour
     {
        if(collision.collider.CompareTag("Ball") && isJumping)
         {
-            Rigidbody ballRB = collision.collider.GetComponent<Rigidbody>();
+
+            Ball ballRB = collision.collider.GetComponent<Ball>();
             if(isBlocking)
             {
                 SoundManager.Instance.PlaySound("block");
@@ -152,13 +166,18 @@ public class PlayerMove : MonoBehaviour
                 float x = team == PlayerTeam.Left ? Mathf.Cos(smashDeg): -Mathf.Cos(smashDeg);
                 float y = -Mathf.Sin(smashDeg);
                 Vector3 dir = new Vector3(x, y, 0);
-                ballRB.velocity = dir * smashForce;
+                ballRB.rb.velocity = dir * smashForce;
+                ballRB.SetStat(BallStat.Smash);
+                TimeScaleManager.Instance.SlowMotion(0.2f);
                 SoundManager.Instance.PlaySound("Smash");
             }
             else if(isJumping)
             {
                 Vector3 dir = team == PlayerTeam.Left ? new Vector3(1, 1, 0) : new Vector3(-1, 1, 0);
-                ballRB.velocity = dir * tossForce;
+                ballRB.rb.velocity = dir * tossForce;
+
+                tossParticle.transform.position = collision.contacts[0].point;
+                tossParticle.Play();
                 SoundManager.Instance.PlaySound("toss");
             }
         }

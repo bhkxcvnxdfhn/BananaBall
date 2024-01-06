@@ -4,13 +4,22 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    [SerializeField] private GameObject smashEffect;
-    private Rigidbody rb;
-    private BallStat ballStat;
+    [SerializeField] private ParticleSystem smashEffect;
+    [SerializeField] private ParticleSystem hitParticle;
+    public Rigidbody rb;
+    private BallStat ballStat = BallStat.Normal;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+    }
+
+    void Update()
+    {
+        if(ballStat == BallStat.Smash)
+        {
+            smashEffect.transform.forward = rb.velocity;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -18,17 +27,28 @@ public class Ball : MonoBehaviour
         if (collision.collider.CompareTag("LeftGround"))
         {
             BallSpawnManager.Instance.ResetBallPoint(BallSpawnPoint.Right);
+            ScoreManager.Instance.GetScore(PlayerTeam.Right);
             SoundManager.Instance.PlaySound("win");
+            GameManager.Instance.BallPrepare();
         }
         else if(collision.collider.CompareTag("RightGround"))
         {
             BallSpawnManager.Instance.ResetBallPoint(BallSpawnPoint.Left);
+            ScoreManager.Instance.GetScore(PlayerTeam.Left);
             SoundManager.Instance.PlaySound("win");
+            GameManager.Instance.BallPrepare();
         }
-        else if(collision.collider.CompareTag("Wall"))
+
+        if(ballStat == BallStat.Smash)
         {
-            Debug.Log(rb.velocity);
-            //rb.velocity = new Vector3(-rb.velocity.x, rb.velocity.y, rb.velocity.z);
+            SetStat(BallStat.Normal);
+        }
+        
+        if(!collision.collider.CompareTag("Player"))
+        {
+            hitParticle.transform.position = collision.contacts[0].point + collision.contacts[0].normal * 0.1f;
+            hitParticle.transform.forward = collision.contacts[0].normal;
+            hitParticle.Play();
         }
     }
 
@@ -37,11 +57,12 @@ public class Ball : MonoBehaviour
         this.ballStat = ballStat;
         if(ballStat == BallStat.Normal)
         {
-            smashEffect.SetActive(false);
+            smashEffect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }
         else if(ballStat == BallStat.Smash)
         {
-            smashEffect.SetActive(true);
+            smashEffect.gameObject.SetActive(true);
+            smashEffect.Play();
         }
         else if(ballStat == BallStat.Block)
         {

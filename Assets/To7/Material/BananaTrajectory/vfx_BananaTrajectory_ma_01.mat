@@ -179,7 +179,7 @@ Material:
     - _FrontColor: {r: 1, g: 1, b: 1, a: 1}
     - _HeightMap_ST: {r: 1, g: 1, b: 0, a: 0}
     - _MainColor: {r: 2.297397, g: 2.297397, b: 2.297397, a: 1}
-    - _MainTexST: {r: 2.61, g: 1, b: 0, a: 0}
+    - _MainTexST: {r: 1, g: 1, b: 0, a: 0}
     - _MaskTexST: {r: 1, g: 1, b: 0, a: 0}
     - _NoiseUV: {r: 3, g: 3, b: 0, a: 0}
     - _OffsetTex_ST: {r: 1, g: 1, b: 0, a: 0}

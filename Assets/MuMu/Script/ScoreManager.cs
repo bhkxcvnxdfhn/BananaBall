@@ -9,8 +9,8 @@ public class ScoreManager : MonoBehaviourSingleton<ScoreManager>
     [SerializeField] private TMP_Text leftScoreText;
     [SerializeField] private TMP_Text rightScoreText;
 
-    private int leftTeamScore;
-    private int rightTeamScore;
+    public int leftTeamScore;
+    public int rightTeamScore;
 
     public void ResetScore()
     {
@@ -25,11 +25,14 @@ public class ScoreManager : MonoBehaviourSingleton<ScoreManager>
         if(team == PlayerTeam.Left)
         {
             leftTeamScore ++;
-            leftScoreText.text = leftScoreText.ToString();
+            leftScoreText.text = leftTeamScore.ToString();
+            leftScoreText.transform.DOPunchScale(new Vector3(1, 1, 0), 0.2f, 4);
         }
         else if(team == PlayerTeam.Right)
         {
             rightTeamScore ++;
+            rightScoreText.text = rightTeamScore.ToString();
+            rightScoreText.transform.DOPunchScale(new Vector3(1, 1, 0), 0.2f, 4);
         }
     }
 }

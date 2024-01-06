@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class BallSpawnManager : MonoBehaviourSingleton<BallSpawnManager>
@@ -15,12 +16,8 @@ public class BallSpawnManager : MonoBehaviourSingleton<BallSpawnManager>
 
     public void SpawnBall(BallSpawnPoint spawnPoint)
     {
-        if(ball == null)
-        {
-            CreateBall(spawnPoint);
-        }
-
-        ResetBallPoint(spawnPoint);
+        CreateBall(spawnPoint);
+        StopBall();
     }
 
     public void ResetBallPoint(BallSpawnPoint spawnPoint) 
@@ -43,7 +40,7 @@ public class BallSpawnManager : MonoBehaviourSingleton<BallSpawnManager>
         {
             ball.transform.position = centerPoint.position;
         }
-        rb.velocity = Vector3.zero;
+        StopBall();
     }
 
     private void CreateBall(BallSpawnPoint spawnPoint)
@@ -61,6 +58,16 @@ public class BallSpawnManager : MonoBehaviourSingleton<BallSpawnManager>
             ball = Instantiate(ballPrefab, centerPoint.position, Quaternion.identity);
         }
         rb = ball.GetComponent<Rigidbody>();
+    }
+
+    public void StartBall()
+    {
+        rb.isKinematic = false;
+    }
+
+    public void StopBall()
+    {
+        rb.isKinematic = true;
     }
 }
 
