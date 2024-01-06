@@ -46,7 +46,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Alpha: 0.259
+    - _Alpha: 0.454
     - _AlphaCutoff: 0.5
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -54,7 +54,7 @@ Material:
     m_Colors:
     - _DistortST: {r: 1, g: 0.91, b: 0, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SeaTex1ST: {r: 1, g: 1, b: 0.09, a: 0}
-    - _SeaTex2ST: {r: 1, g: 1, b: -0.12, a: 0}
-    - _WaterColor: {r: 0.023529412, g: 1.3960785, b: 1.7019608, a: 1}
+    - _SeaTex1ST: {r: 10, g: 10, b: 0.09, a: 0}
+    - _SeaTex2ST: {r: 10, g: 10, b: -0.12, a: 0}
+    - _WaterColor: {r: 0, g: 0.83299744, b: 1.1880455, a: 1}
   m_BuildTextureStacks: []
