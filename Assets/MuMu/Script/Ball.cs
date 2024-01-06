@@ -16,10 +16,12 @@ public class Ball : MonoBehaviour
         if (collision.collider.CompareTag("LeftGround"))
         {
             BallSpawnManager.Instance.ResetBallPoint(BallSpawnPoint.Right);
+            SoundManager.Instance.PlaySound("win");
         }
         else if(collision.collider.CompareTag("RightGround"))
         {
             BallSpawnManager.Instance.ResetBallPoint(BallSpawnPoint.Left);
+            SoundManager.Instance.PlaySound("win");
         }
         else if(collision.collider.CompareTag("Wall"))
         {

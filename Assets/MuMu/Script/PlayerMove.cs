@@ -110,6 +110,7 @@ public class PlayerMove : MonoBehaviour
     {
         isJumping = true;
         rb.AddForce(new Vector3(0, jumpSpeed, 0), ForceMode.Impulse);
+        SoundManager.Instance.PlaySound("toss");
     }
 
     public bool CanSmash()
@@ -140,7 +141,7 @@ public class PlayerMove : MonoBehaviour
             Rigidbody ballRB = collision.collider.GetComponent<Rigidbody>();
             if(isBlocking)
             {
-
+                SoundManager.Instance.PlaySound("block");
             }
             else if(isSmashing)
             {
@@ -150,11 +151,13 @@ public class PlayerMove : MonoBehaviour
                 float y = -Mathf.Sin(smashDeg);
                 Vector3 dir = new Vector3(x, y, 0);
                 ballRB.velocity = dir * smashForce;
+                SoundManager.Instance.PlaySound("Smash");
             }
             else if(isJumping)
             {
                 Vector3 dir = team == PlayerTeam.Left ? new Vector3(1, 1, 0) : new Vector3(-1, 1, 0);
                 ballRB.velocity = dir * tossForce;
+                SoundManager.Instance.PlaySound("toss");
             }
         }
     }
