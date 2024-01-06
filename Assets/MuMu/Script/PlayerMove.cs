@@ -170,6 +170,7 @@ public class PlayerMove : MonoBehaviour
                 ballRB.SetStat(BallStat.Smash);
                 TimeScaleManager.Instance.SlowMotion(0.2f);
                 SoundManager.Instance.PlaySound("Smash");
+                CameraShakeManager.Instance.Shake(dir);
             }
             else if(isJumping)
             {
