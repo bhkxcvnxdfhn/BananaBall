@@ -6,21 +6,36 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviourSingleton<GameManager>
 {
+    [SerializeField] private Transform leftSpawnPoint;
+    [SerializeField] private Transform rightSpawnPoint;
+    [SerializeField] private Transform leftPlayer;
+    [SerializeField] private Transform rightPlayer;
     [SerializeField] private TMP_Text prepareTimeText;
     [SerializeField] private TMP_Text timeText;
-    [SerializeField] private TMP_Text winText;
+    [SerializeField] private TMP_Text win01Text;
+    [SerializeField] private TMP_Text win02Text;
+    [SerializeField] private TMP_Text win01ScoreText;
+    [SerializeField] private TMP_Text win02ScoreText;
+    [SerializeField] private GameObject preparePanel;
+    [SerializeField] private GameObject winPanel;
+    [SerializeField] private GameObject startPanel;
+    [SerializeField] private GameObject focusCamera;
 
     [SerializeField] private float gameTime = 120;
     [SerializeField] private float prepareTime = 4;
 
-    private bool isGaming;
+    public bool isGaming;
     private bool isBallPrepare;
     private float gameTimer;
     private float prepareTimer;
 
-    private void Start()
+    /// <summary>
+    /// Start is called on the frame when a script is enabled just before
+    /// any of the Update methods is called the first time.
+    /// </summary>
+    void Start()
     {
-        GameStart();
+        startPanel.SetActive(true);
     }
 
     void Update()
@@ -35,7 +50,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
 
                 if(prepareTimer <= 0)
                 {
-                    prepareTimeText.gameObject.SetActive(false);
+                    preparePanel.SetActive(false);
                     BallSpawnManager.Instance.StartBall();
                     isBallPrepare = false;
                 }
@@ -55,17 +70,32 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
 
     private string GetTime()
     {
-        float mid = gameTimer / 60f;
-        float second = gameTimer % 60;
+        int mid = (int)gameTimer / 60;
+        int second = (int)gameTimer % 60;
         return mid.ToString("00") + ":" + second.ToString("00");
     }
 
-    private void GameStart()
+    
+    public void GameStart()
     {
-        isGaming = true;
+        StartCoroutine(GameStartCo());
+    }
+
+    private IEnumerator GameStartCo()
+    {
+        focusCamera.SetActive(false);
+        winPanel.SetActive(false);
+        startPanel.SetActive(false);
+        leftPlayer.position = leftSpawnPoint.position;
+        rightPlayer.position = rightSpawnPoint.position;
         prepareTimer = prepareTime;
         gameTimer = gameTime;
-        BallSpawnManager.Instance.SpawnBall(BallSpawnPoint.Center);
+        timeText.text = GetTime();
+        ScoreManager.Instance.ResetScore();
+
+        yield return new WaitForSeconds(2);
+        isGaming = true;
+        BallSpawnManager.Instance.SpawnBall(BallSpawnPoint.Left);
         BallPrepare();
     }
 
@@ -73,21 +103,42 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     {
         isBallPrepare = true;
         prepareTimer = prepareTime;
-        prepareTimeText.gameObject.SetActive(true);
+        preparePanel.SetActive(true);
         prepareTimeText.text = prepareTimer.ToString();
     }
 
     private void GameEnd()
     {
+        StartCoroutine(GameEndCO());
+    }
+
+    private IEnumerator GameEndCO()
+    {
+        focusCamera.SetActive(true);
+        isGaming = false;
+        
+        BallSpawnManager.Instance.ResetBallPoint(BallSpawnPoint.Left);
+
+        yield return new WaitForSeconds(2);
+
         bool leftWin = ScoreManager.Instance.leftTeamScore > ScoreManager.Instance.rightTeamScore;
+        winPanel.SetActive(true);
         if(leftWin)
         {
-            
+            win01Text.text = "Win";
+            win01Text.color = Color.green;
+            win02Text.text = "Lose";
+            win02Text.color = Color.red;
         }
         else
         {
-
+            win01Text.text = "Lose";
+            win02Text.color = Color.red;
+            win02Text.text = "Win";
+            win02Text.color = Color.green;
         }
-        isGaming = false;
+
+        win01ScoreText.text = "Score:" + ScoreManager.Instance.leftTeamScore.ToString();
+        win02ScoreText.text = "Score:" + ScoreManager.Instance.rightTeamScore.ToString();
     }
 }

@@ -16,8 +16,8 @@ public class ScoreManager : MonoBehaviourSingleton<ScoreManager>
     {
         leftTeamScore = 0;
         rightTeamScore = 0;
-        leftScoreText.text = leftScoreText.ToString();
-        rightScoreText.text = rightScoreText.ToString();
+        leftScoreText.text = leftTeamScore.ToString();
+        rightScoreText.text = rightTeamScore.ToString();
     }
 
     public void GetScore(PlayerTeam team)

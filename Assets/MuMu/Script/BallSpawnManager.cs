@@ -16,8 +16,15 @@ public class BallSpawnManager : MonoBehaviourSingleton<BallSpawnManager>
 
     public void SpawnBall(BallSpawnPoint spawnPoint)
     {
-        CreateBall(spawnPoint);
-        StopBall();
+        if(ball == null)
+        {
+            CreateBall(spawnPoint);
+            StopBall();
+        }
+        else
+        {
+            ResetBallPoint(spawnPoint);
+        }
     }
 
     public void ResetBallPoint(BallSpawnPoint spawnPoint) 
