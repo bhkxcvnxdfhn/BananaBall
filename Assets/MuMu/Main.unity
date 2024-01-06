@@ -213,8 +213,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 40327793}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5, y: -0.5, z: 0}
-  m_LocalScale: {x: 10, y: 1, z: 20}
+  m_LocalPosition: {x: -13.7982, y: -0.5, z: 0}
+  m_LocalScale: {x: 27.595999, y: 1, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -558,6 +558,10 @@ PrefabInstance:
       value: Player02
       objectReference: {fileID: 0}
     - target: {fileID: 904288511294962428, guid: ca3ddeb535197554dab9c764fe4dc63d, type: 3}
+      propertyPath: team
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 904288511294962428, guid: ca3ddeb535197554dab9c764fe4dc63d, type: 3}
       propertyPath: jumpInputString
       value: Player02J
       objectReference: {fileID: 0}
@@ -842,8 +846,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1572845987}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5, y: -0.5, z: 0}
-  m_LocalScale: {x: 10, y: 1, z: 20}
+  m_LocalPosition: {x: 14.7625, y: -0.5, z: 0}
+  m_LocalScale: {x: 29.525002, y: 1, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

@@ -11,6 +11,7 @@ public class BallSpawnManager : MonoBehaviourSingleton<BallSpawnManager>
     [SerializeField] private Transform centerPoint;
 
     private GameObject ball;
+    private Rigidbody rb;
 
     public void SpawnBall(BallSpawnPoint spawnPoint)
     {
@@ -42,11 +43,24 @@ public class BallSpawnManager : MonoBehaviourSingleton<BallSpawnManager>
         {
             ball.transform.position = centerPoint.position;
         }
+        rb.velocity = Vector3.zero;
     }
 
     private void CreateBall(BallSpawnPoint spawnPoint)
     {
-        ball = Instantiate(ballPrefab);
+        if (spawnPoint == BallSpawnPoint.Left)
+        {
+            ball = Instantiate(ballPrefab, leftTeamPoint.position, Quaternion.identity);
+        }
+        else if (spawnPoint == BallSpawnPoint.Right)
+        {
+            ball = Instantiate(ballPrefab, rightTeamPoint.position, Quaternion.identity);
+        }
+        else if (spawnPoint == BallSpawnPoint.Center)
+        {
+            ball = Instantiate(ballPrefab, centerPoint.position, Quaternion.identity);
+        }
+        rb = ball.GetComponent<Rigidbody>();
     }
 }
 
