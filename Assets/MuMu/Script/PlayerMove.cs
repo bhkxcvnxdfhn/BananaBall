@@ -72,6 +72,8 @@ public class PlayerMove : MonoBehaviour
 
         BetterJump();
         Move();
+
+        lastGrounded = isGrounded;
     }
 
     private void Move()
