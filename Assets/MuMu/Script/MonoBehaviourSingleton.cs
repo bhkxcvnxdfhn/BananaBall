@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviour
 {
+    
     private static T _Instance;
     public static T Instance
     {
@@ -11,10 +12,10 @@ public class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviour
         {
             if (_Instance != null)
             {
-                return _Instance;      // ¤w¸gµù¥UªºSingletonª«¥ó
+                return _Instance;      // ï¿½wï¿½gï¿½ï¿½ï¿½Uï¿½ï¿½Singletonï¿½ï¿½ï¿½ï¿½
             }
             _Instance = FindObjectOfType<T>();
-            //´M§ä¤w¸g¦bSceneªºSingletonª«¥ó:
+            //ï¿½Mï¿½ï¿½wï¿½gï¿½bSceneï¿½ï¿½Singletonï¿½ï¿½ï¿½ï¿½:
             if (_Instance != null)
             {
                 return _Instance;
